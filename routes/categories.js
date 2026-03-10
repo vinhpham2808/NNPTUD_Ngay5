@@ -28,9 +28,12 @@ router.get('/:id', async function (req, res, next) {
   }
 });
 router.post('/', async function (req, res, next) {
+  if (typeof req.body.name !== 'string' || !req.body.name.trim()) {
+    return res.status(400).send({ message: 'name is required' });
+  }
   let newCate = new categoryModel({
-    name: req.body.name,
-    slug: slugify(req.body.name, {
+    name: req.body.name.trim(),
+    slug: slugify(req.body.name.trim(), {
       replacement: '-',
       remove: undefined,
       lower: true,

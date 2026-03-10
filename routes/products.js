@@ -28,9 +28,12 @@ router.get('/:id', async function (req, res, next) {
 });
 
 router.post('/', async function (req, res, next) {
+  if (typeof req.body.title !== 'string' || !req.body.title.trim()) {
+    return res.status(400).send({ message: 'title is required' });
+  }
   let newProduct = new productModel({
-    title: req.body.title,
-    slug: slugify(req.body.title, {
+    title: req.body.title.trim(),
+    slug: slugify(req.body.title.trim(), {
       replacement: '-',
       remove: undefined,
       lower: true,
